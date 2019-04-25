@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import WebpackLoader from "phaser-webpack-loader"
+
 var player;
 var stars;
 var bombs;
@@ -9,53 +9,26 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 
-function collectStar(player, star) {
-    star.disableBody(true, true);
-
-    //  Add and update the score
-    score += 10;
-    scoreText.setText('Score: ' + score);
-
-    if (stars.countActive(true) === 0) {
-        //  A new batch of stars to collect
-        stars.children.iterate(function (child) {
-
-            child.enableBody(true, child.x, 0, true, true);
-
-        });
-
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-        var bomb = bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
-    }
-}
-
-function hitBomb(player, bomb) {
-    this.physics.pause();
-
-    player.setTint(0xff0000);
-
-    player.anims.play('turn');
-
-    gameOver = true;
-}
-
 
 export default class ExampleScene extends Phaser.Scene {
     preload() {
-        this.load.scenePlugin('WebpackLoader', WebpackLoader, 'loader', 'loader')
+        this.load.image('connect4', 'assets/images/connect4.png');
+        this.load.image('ground', 'assets/images/platform.png');
+        this.load.image('star', 'assets/images/star.png');
+        this.load.image('bomb', 'assets/images/bomb.png');
+        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     }
-
     create() {
         //  A simple background for our game
-        console.log("adding image")
-        this.add.image(400, 300, 'sky');
+        let background = this.add.image(400, 365, 'connect4')
+        background.setScale(0.9)
+        stars = this.physics.add.image(400, 300, "star")
+        stars.setVelocity(100, 200).setBounce(0,1).setCollideWorldBounds(true).setGravityY(200)
+        console.log(stars)
+        // stars.setVelocity(100,200).setBound(1,1).setCollideWorldBounds(true).setGravityY(200);
     }
 
     update() {
+
     }
 }
