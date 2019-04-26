@@ -10,7 +10,7 @@ const Game = () => {
             type: Phaser.AUTO,
             parent: "phaser-example",
             width: 800,
-            height: 730,
+            height: 770,
             physics: {
                 default: 'arcade',
                 arcade: {
